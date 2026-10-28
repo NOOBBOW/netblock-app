@@ -1,0 +1,45 @@
+========================
+APK 打包步骤（GitHub Actions 云端构建）
+========================
+
+第 1 步：注册 / 登录 GitHub
+  打开 https://github.com 注册一个免费账号（已有则直接登录）。
+
+第 2 步：新建仓库
+  1. 登录后点击右上角 "+" → New repository
+  2. 仓库名填：netblock-app
+  3. 选 Public（公开免费，Actions 不限时长；Private 也可以，每月 2000 分钟够用）
+  4. 不要勾选任何初始化选项（README/.gitignore 都不勾）
+  5. 点 Create repository
+
+第 3 步：上传本项目文件夹
+  1. 进入刚建好的仓库页面，点击 "uploading an existing file" 链接
+     （或点 Add file → Upload files）
+  2. 把 NetBlockApp 整个文件夹拖进上传区域
+     （注意：必须包含 .github 文件夹！Windows 资源管理器里看不到 .github
+       的话，先在文件夹顶部"查看"里勾选"隐藏的项目"）
+  3. 等待文件全部列出来后，点 Commit changes
+
+第 4 步：等待云端构建
+  1. 点仓库顶部的 "Actions" 标签页
+  2. 会看到 "Build Android APK" 正在运行（黄色圆圈 ≈ 构建中）
+  3. 全程大约 20~30 分钟，请耐心等待（可以关掉页面，构建在云端继续）
+
+第 5 步：下载 APK
+  1. 构建变成绿色对勾 ✔ 后，点进这次构建
+  2. 页面底部 "Artifacts" 区域有一个 "NetBlock-APK"
+  3. 点它下载 zip，解压得到 .apk 文件
+  4. 把 apk 传到手机上安装即可（手机需允许"安装未知来源应用"）
+
+常见问题：
+  Q: Actions 构建失败了？
+  A: 点进构建看红色步骤的日志，把报错内容发给 WorkBuddy 即可。
+
+  Q: 想改应用图标？
+  A: 准备一张 512x512 的 png 放进本文件夹，命名 icon.png，
+     并在 buildozer.spec 里把 "icon.filename =" 改成 "icon.filename = icon.png"，
+     重新上传触发构建。
+
+  Q: 以后改了代码怎么重新打包？
+  A: 在 GitHub 仓库页面把 main.py 内容更新（编辑文件重新提交），
+     Actions 会自动重新构建。

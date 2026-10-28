@@ -1,0 +1,43 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            autoconf automake libtool pkg-config \
+            libltdl-dev libssl-dev build-essential \
+            git zip unzip openjdk-17-jdk \
+            ccache zlib1g-dev zlib1g libncurses5-dev \
+            libffi-dev libsqlite3-dev
+
+      - name: Install Buildozer
+        run: pip install buildozer "cython<3.0"
+
+      - name: Build APK
+        run: buildozer -v android debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NetBlock-APK
+          path: bin/*.apk
+          retention-days: 30
