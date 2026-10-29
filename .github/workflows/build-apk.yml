@@ -8,21 +8,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build APK with Buildozer
-        id: buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          buildozer_version: stable
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            autoconf automake libtool pkg-config \
+            libltdl-dev libssl-dev build-essential \
+            git zip unzip openjdk-17-jdk \
+            ccache zlib1g-dev libncurses5-dev \
+            libffi-dev libsqlite3-dev
+
+      - name: Install Buildozer
+        run: pip install buildozer "cython<3.0"
+
+      - name: Build APK
+        # yes | 自动应答 Android SDK 许可等所有交互确认
+        run: yes | buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: NetBlock-APK
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
           retention-days: 30
