@@ -1,0 +1,4 @@
+# 强制 python-for-android 使用纯 Python 版本的依赖，
+# 规避 charset-normalizer>=3.0 编译版（cp314 android wheel）不兼容问题
+charset-normalizer==2.1.1
+requests==2.31.0
