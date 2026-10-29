@@ -34,6 +34,10 @@ jobs:
 
       - name: Build APK
         # yes | 自动应答 Android SDK 许可等所有交互确认
+        # PIP_CONSTRAINT 强制 p4a 内部所有 pip 解析都用纯 Python 版依赖，
+        # 绕开 charset-normalizer>=3.0 的 cp314 android wheel 不兼容问题
+        env:
+          PIP_CONSTRAINT: ${{ github.workspace }}/constraints.txt
         run: yes | buildozer -v android debug
 
       - name: Upload APK artifact
