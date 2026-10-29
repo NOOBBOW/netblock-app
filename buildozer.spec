@@ -14,7 +14,7 @@ source.include_exts = py,png,jpg,jpeg,kv,atlas
 version = 1.0
 
 # 依赖（kivy + requests 及其证书依赖）
-requirements = python3,kivy,requests==2.31.0,charset-normalizer==3.3.2,certifi
+requirements = python3,kivy,requests==2.31.0,charset-normalizer==2.1.1,certifi
 
 # 屏幕方向
 orientation = portrait
